@@ -11,21 +11,70 @@ Production-ready GitHub Pages directory for sharing one link and one QR code per
 - Desktop users see the selected app and can choose a store.
 - QR codes are generated in the browser by the vendored QRCode.js library. No third-party API receives the links.
 
-## Add or update an app
+## How to add new apps
 
-Edit `APP_CATALOG` in `app.js`:
+All app data lives in one place: `APP_CATALOG` inside `app.js`.
+
+To add a new app, add one new object to the `APP_CATALOG` array:
 
 ```js
-{
-  id: 'unique-url-safe-id',
-  name: 'Display name',
-  initials: 'DN',
-  playStoreUrl: 'https://play.google.com/store/apps/details?id=...',
-  appStoreUrl: 'https://apps.apple.com/...',
-}
+Object.freeze({
+  id: 'yourappname',
+  name: 'Your App Name',
+  initials: 'YA',
+  playStoreUrl: 'https://play.google.com/store/apps/details?id=your.android.package',
+  appStoreUrl: 'https://apps.apple.com/in/app/your-app-name/id1234567890',
+}),
 ```
 
-The universal link and QR code are created automatically from the app `id`.
+Example:
+
+```js
+const APP_CATALOG = Object.freeze([
+  Object.freeze({
+    id: 'cuddlesncare',
+    name: 'CuddlesNCare',
+    initials: 'CC',
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.docterz.connect.cuddles.care',
+    appStoreUrl: 'https://apps.apple.com/in/app/cuddlesncare-online/id1552884476',
+  }),
+
+  Object.freeze({
+    id: 'yourappname',
+    name: 'Your App Name',
+    initials: 'YA',
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=your.android.package',
+    appStoreUrl: 'https://apps.apple.com/in/app/your-app-name/id1234567890',
+  }),
+]);
+```
+
+Field rules:
+
+- `id` must be unique and URL-safe. Use lowercase text with no spaces, for example `myclinicapp`.
+- `name` is the display name shown on the website.
+- `initials` appears inside the app icon box.
+- `playStoreUrl` is the Android Google Play link.
+- `appStoreUrl` is the iPhone/iPad App Store link.
+
+After adding an app, run:
+
+```bash
+npm test
+git add app.js
+git commit -m "Add Your App Name"
+git push origin main
+```
+
+GitHub Pages deploys automatically after the push.
+
+The new public app link will be:
+
+```text
+https://docterztech.github.io/app-download/?app=yourappname
+```
+
+The QR code is generated automatically from that link.
 
 ## GitHub Pages
 
