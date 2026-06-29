@@ -2,6 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { createUniversalLink, getPlatform, redirectToStore } from '../js/core/link-service.js';
+import { getRouteState, ROUTE_TYPES } from '../js/core/route-service.js';
+
+const testCatalog = Object.freeze([
+  Object.freeze({ id: 'cuddlesncare', name: 'CuddlesNCare' }),
+  Object.freeze({ id: 'fortitudebydrashvinchouhan', name: 'Fortitude by Dr. Ashvin Chouhan' }),
+]);
 
 test('creates a clean universal link for an app', () => {
   global.window = {
@@ -53,4 +59,32 @@ test('redirects each mobile platform to the correct store', () => {
   redirectToStore(app, 'ios');
 
   assert.deepEqual(redirects, [app.playStoreUrl, app.appStoreUrl]);
+});
+
+test('uses the full directory when no app is requested', () => {
+  const state = getRouteState(testCatalog, 'https://docterztech.github.io/app-download/');
+
+  assert.equal(state.type, ROUTE_TYPES.DIRECTORY);
+  assert.equal(state.apps.length, 2);
+  assert.equal(state.selectedApp, null);
+});
+
+test('uses a single app detail route for valid app links', () => {
+  const state = getRouteState(
+    testCatalog,
+    'https://docterztech.github.io/app-download/?app=cuddlesncare',
+  );
+
+  assert.equal(state.type, ROUTE_TYPES.APP_DETAIL);
+  assert.equal(state.apps.length, 1);
+  assert.equal(state.apps[0].id, 'cuddlesncare');
+  assert.equal(state.selectedApp.name, 'CuddlesNCare');
+});
+
+test('falls back to the directory for invalid app links', () => {
+  const state = getRouteState(testCatalog, 'https://docterztech.github.io/app-download/?app=missing');
+
+  assert.equal(state.type, ROUTE_TYPES.NOT_FOUND);
+  assert.equal(state.apps.length, 2);
+  assert.equal(state.selectedApp, null);
 });
