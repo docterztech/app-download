@@ -1,12 +1,63 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>App Download</title>
-</head>
-<body>
-<h2 id="status">Redirecting...</h2>
-<script src="app.js"></script>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Official Docterz app download links for Android and iPhone.">
+    <meta name="theme-color" content="#ffffff">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    >
+    <title>Docterz Apps</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="vendor/qrcodejs/qrcode.min.js" defer></script>
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="page-shell site-header__content">
+        <a class="brand" href="./" aria-label="Docterz Apps home">
+          <span class="brand__mark" aria-hidden="true">D</span>
+          <span>Docterz Apps</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="page-shell hero__content">
+          <h1 id="page-title">Download the right app for your device</h1>
+          <p>Scan once or share one link. We’ll open the correct store automatically.</p>
+        </div>
+      </section>
+
+      <div
+        id="notification"
+        class="notification page-shell"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></div>
+
+      <section class="directory page-shell" aria-labelledby="directory-title">
+        <h2 id="directory-title" class="sr-only">Available apps</h2>
+        <div id="app-list" class="app-grid" aria-busy="true"></div>
+      </section>
+
+      <noscript>
+        <p class="noscript-message">JavaScript is required to generate universal links and QR codes.</p>
+      </noscript>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-shell site-footer__content">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3 5.5 5.8v5.7c0 4.1 2.7 7.8 6.5 9.5 3.8-1.7 6.5-5.4 6.5-9.5V5.8L12 3Z"></path>
+          <path d="m9.5 12 1.7 1.7 3.6-3.8"></path>
+        </svg>
+        <span>Official app download links</span>
+      </div>
+    </footer>
+  </body>
 </html>
